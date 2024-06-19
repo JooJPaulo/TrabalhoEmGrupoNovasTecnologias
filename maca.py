@@ -2,10 +2,13 @@
 import pygame
 from random import randint
 
-class Maca:
+class Maca(pygame.sprite.Sprite):
     def __init__(self, largura, altura):
-        self.x = randint(40, largura - 40)
-        self.y = randint(50, altura - 50)
+        super().__init__()
+        self.image = pygame.Surface((20, 20))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.center = (randint(40, largura - 40), randint(50, altura - 50))
 
     def desenhar(self, tela):
-        pygame.draw.rect(tela, (255, 0, 0), (self.x, self.y, 20, 20))
+        tela.blit(self.image, self.rect)

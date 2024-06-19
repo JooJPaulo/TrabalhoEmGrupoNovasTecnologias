@@ -1,18 +1,23 @@
 import pygame
 from pygame.locals import *
 
-class Cobra:
+class Cobra(pygame.sprite.Sprite):
     def __init__(self, largura, altura):
-        self.largura = largura
-        self.altura = altura
-        self.x = int(largura / 2)
-        self.y = int(altura / 2)
+        super().__init__()
+        self.image = pygame.Surface((20, 20))
+        self.image.fill((0, 255, 0))
+        self.rect = self.image.get_rect()
+        self.rect.center = (largura / 2, altura / 2)
         self.velocidade = 10
         self.x_controle = self.velocidade
         self.y_controle = 0
         self.comprimento_inicial = 5
         self.lista_cobra = []
         self.morreu = False
+        self.largura = largura
+        self.altura = altura
+        self.x = self.rect.x
+        self.y = self.rect.y
 
     def aumenta_cobra(self, tela):
         for XeY in self.lista_cobra:
@@ -53,3 +58,23 @@ class Cobra:
         self.lista_cobra = []
         self.comprimento_inicial = 5
         self.morreu = False
+
+    def move_left(self):
+        if self.x_controle == 0:
+            self.x_controle = -self.velocidade
+            self.y_controle = 0
+
+    def move_right(self):
+        if self.x_controle == 0:
+            self.x_controle = self.velocidade
+            self.y_controle = 0
+
+    def move_up(self):
+        if self.y_controle == 0:
+            self.x_controle = 0
+            self.y_controle = -self.velocidade
+
+    def move_down(self):
+        if self.y_controle == 0:
+            self.x_controle = 0
+            self.y_controle = self.velocidade

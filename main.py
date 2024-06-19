@@ -1,10 +1,8 @@
 import pygame
 from pygame.locals import *
 from sys import exit
-from random import randint
-from maca import Maca
 from cobra import Cobra
-
+from maca import Maca
 
 # Definição da classe Jogo
 class Jogo:
@@ -20,69 +18,57 @@ class Jogo:
         self.relogio = pygame.time.Clock()
         self.cobra = Cobra(largura, altura)
         self.maca = Maca(largura, altura)
+        self.texto_formatado = self.fonte.render(f'Pontos: {self.pontos}', True, (0, 0, 0))
+
+        self.key_mapping = {
+            K_a: self.cobra.move_left,
+            K_LEFT: self.cobra.move_left,
+            K_d: self.cobra.move_right,
+            K_RIGHT: self.cobra.move_right,
+            K_w: self.cobra.move_up,
+            K_UP: self.cobra.move_up,
+            K_s: self.cobra.move_down,
+            K_DOWN: self.cobra.move_down,
+        }
 
     def rodar(self):
         while True:
             self.relogio.tick(30)
-            self.tela.fill((255, 255, 255))
-
-            mensagem = f'Pontos: {self.pontos}'
-            texto_formatado = self.fonte.render(mensagem, True, (0, 0, 0))
+            pygame.event.pump()
 
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
                 if event.type == KEYDOWN:
-                    if event.key == K_a:
-                        if self.cobra.x_controle == self.cobra.velocidade:
-                            pass
-                        else:
-                            self.cobra.x_controle = -self.cobra.velocidade
-                            self.cobra.y_controle = 0
-                    if event.key == K_d:
-                        if self.cobra.x_controle == -self.cobra.velocidade:
-                            pass
-                        else:
-                            self.cobra.x_controle = self.cobra.velocidade
-                            self.cobra.y_controle = 0
-                    if event.key == K_w:
-                        if self.cobra.y_controle == self.cobra.velocidade:
-                            pass
-                        else:
-                            self.cobra.y_controle = -self.cobra.velocidade
-                            self.cobra.x_controle = 0
-                    if event.key == K_s:
-                        if self.cobra.y_controle == -self.cobra.velocidade:
-                            pass
-                        else:
-                            self.cobra.y_controle = self.cobra.velocidade
-                            self.cobra.x_controle = 0
+                    action = self.key_mapping.get(event.key)
+                    if action:
+                        action()
 
             self.cobra.mover()
             self.cobra.verificar_colisao()
 
-            if pygame.Rect(self.cobra.x, self.cobra.y, 20, 20).colliderect(pygame.Rect(self.maca.x, self.maca.y, 20, 20)):
+            if pygame.sprite.collide_rect(self.cobra, self.maca):
                 self.maca = Maca(self.largura, self.altura)
                 self.pontos += 1
                 self.cobra.comprimento_inicial += 1
+                self.texto_formatado = self.fonte.render(f'Pontos: {self.pontos}', True, (0, 0, 0))
 
             if self.cobra.morreu:
                 self.mostrar_mensagem('Game Over! Pressione R para jogar novamente')
                 self.reiniciar_jogo()
 
+            self.tela.fill((255, 255, 255))  # Clear the screen
             self.cobra.aumenta_cobra(self.tela)
             self.maca.desenhar(self.tela)
-            self.tela.blit(texto_formatado, (450, 40))
+            self.tela.blit(self.texto_formatado, (450, 40))
 
             pygame.display.update()
 
     def mostrar_mensagem(self, mensagem):
-        fonte2 = pygame.font.SysFont('arial', 20, True, True)
-        texto_formatado = fonte2.render(mensagem, True, (0, 0, 0))
-        ret_texto = texto_formatado.get_rect()
-        ret_texto.center = (self.largura // 2, self.altura // 2)
-        self.tela.blit(texto_formatado, ret_texto)
+        texto = self.fonte.render(mensagem, True, (0, 0, 0))
+        rect = texto.get_rect(center=(self.largura / 2, self.altura / 2))
+        self.tela.blit(texto, rect)
         pygame.display.update()
 
     def reiniciar_jogo(self):
@@ -91,13 +77,12 @@ class Jogo:
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-                if event.type == KEYDOWN:
-                    if event.key == K_r:
-                        self.cobra.reiniciar()
-                        self.pontos = 0
-                        return
-
-# Inicialização do jogo
-if __name__ == '__main__':
-    jogo = Jogo(640, 480)
+                if event.type == KEYDOWN and event.key == K_r:
+                    self.cobra.reiniciar()
+                    self.pontos = 0
+                    self.texto_formatado = self.fonte.render(f'Pontos: {self.pontos}', True, (0, 0, 0))
+                    return
+                
+if __name__ == "__main__":
+    jogo = Jogo(800, 600)
     jogo.rodar()
