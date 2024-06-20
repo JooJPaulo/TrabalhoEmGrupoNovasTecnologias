@@ -1,7 +1,6 @@
 import pygame
-from pygame.locals import *
+from pygame.locals import QUIT, KEYDOWN, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_r
 from sys import exit
-from random import randint
 from maca import Maca
 from cobra import Cobra
 
@@ -14,9 +13,9 @@ class Jogo:
         self.largura = largura
         self.altura = altura
         self.pontos = 0
-        self.fonte = pygame.font.SysFont('arial', 40, bold=True, italic=True)
+        self.fonte = pygame.font.SysFont("arial", 40, bold=True, italic=True)
         self.tela = pygame.display.set_mode((largura, altura))
-        pygame.display.set_caption('Jogo')
+        pygame.display.set_caption("Jogo")
         self.relogio = pygame.time.Clock()
         self.cobra = Cobra(largura, altura)
         self.maca = Maca(largura, altura)
@@ -27,7 +26,7 @@ class Jogo:
             self.relogio.tick(30)
             self.tela.fill((255, 255, 255))
 
-            mensagem = f'Pontos: {self.pontos}'
+            mensagem = f"Points: {self.pontos}"
             texto_formatado = self.fonte.render(mensagem, True, (0, 0, 0))
 
             for event in pygame.event.get():
@@ -63,13 +62,15 @@ class Jogo:
             self.cobra.mover()
             self.cobra.verificar_colisao()
 
-            if pygame.Rect(self.cobra.x, self.cobra.y, 20, 20).colliderect(pygame.Rect(self.maca.x, self.maca.y, 20, 20)):
+            if pygame.Rect(self.cobra.x, self.cobra.y, 20, 20).colliderect(
+                pygame.Rect(self.maca.x, self.maca.y, 20, 20)
+            ):
                 self.maca = Maca(self.largura, self.altura)
                 self.pontos += 1
                 self.cobra.comprimento_inicial += 1
 
             if self.cobra.morreu:
-                self.mostrar_mensagem('Game Over! Pressione R para jogar novamente')
+                self.mostrar_mensagem("Game Over! Press R to play again")
                 self.reiniciar_jogo()
 
             self.cobra.aumenta_cobra(self.tela)
@@ -79,7 +80,7 @@ class Jogo:
             pygame.display.update()
 
     def mostrar_mensagem(self, mensagem):
-        fonte2 = pygame.font.SysFont('arial', 20, True, True)
+        fonte2 = pygame.font.SysFont("arial", 20, True, True)
         texto_formatado = fonte2.render(mensagem, True, (0, 0, 0))
         ret_texto = texto_formatado.get_rect()
         ret_texto.center = (self.largura // 2, self.altura // 2)
@@ -98,7 +99,8 @@ class Jogo:
                         self.pontos = 0
                         return
 
+
 # Inicialização do jogo
-if __name__ == '__main__':
+if __name__ == "__main__":
     jogo = Jogo(640, 480)
     jogo.rodar()

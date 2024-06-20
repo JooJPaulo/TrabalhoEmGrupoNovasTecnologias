@@ -1,8 +1,9 @@
-# maca.py
 import pygame
 from random import randint
 
+
 class Maca:
+
     def __init__(self, largura, altura):
         self.x = randint(40, largura - 40)
         self.y = randint(50, altura - 50)
