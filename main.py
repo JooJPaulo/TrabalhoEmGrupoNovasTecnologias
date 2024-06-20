@@ -20,6 +20,7 @@ class Jogo:
         self.relogio = pygame.time.Clock()
         self.cobra = Cobra(largura, altura)
         self.maca = Maca(largura, altura)
+        self.morreu = False
 
     def rodar(self):
         while True:
@@ -34,25 +35,25 @@ class Jogo:
                     pygame.quit()
                     exit()
                 if event.type == KEYDOWN:
-                    if event.key == K_a:
+                    if event.key == K_LEFT:
                         if self.cobra.x_controle == self.cobra.velocidade:
                             pass
                         else:
                             self.cobra.x_controle = -self.cobra.velocidade
                             self.cobra.y_controle = 0
-                    if event.key == K_d:
+                    if event.key == K_RIGHT:
                         if self.cobra.x_controle == -self.cobra.velocidade:
                             pass
                         else:
                             self.cobra.x_controle = self.cobra.velocidade
                             self.cobra.y_controle = 0
-                    if event.key == K_w:
+                    if event.key == K_UP:
                         if self.cobra.y_controle == self.cobra.velocidade:
                             pass
                         else:
                             self.cobra.y_controle = -self.cobra.velocidade
                             self.cobra.x_controle = 0
-                    if event.key == K_s:
+                    if event.key == K_DOWN:
                         if self.cobra.y_controle == -self.cobra.velocidade:
                             pass
                         else:
@@ -73,7 +74,7 @@ class Jogo:
 
             self.cobra.aumenta_cobra(self.tela)
             self.maca.desenhar(self.tela)
-            self.tela.blit(texto_formatado, (450, 40))
+            self.tela.blit(texto_formatado, (10, 10))
 
             pygame.display.update()
 
