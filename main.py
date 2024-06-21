@@ -15,7 +15,7 @@ class Jogo:
         self.pontos = 0
         self.fonte = pygame.font.SysFont("arial", 40, bold=True, italic=True)
         self.tela = pygame.display.set_mode((largura, altura))
-        pygame.display.set_caption("Jogo")
+        pygame.display.set_caption("Snake Game")
         self.relogio = pygame.time.Clock()
         self.cobra = Cobra(largura, altura)
         self.maca = Maca(largura, altura)

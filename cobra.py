@@ -28,10 +28,6 @@ class Cobra:
         self.x += self.x_controle
         self.y += self.y_controle
 
-        if self.x >= self.largura or self.x < 0 or self.y >= self.altura or self.y < 0:
-
-            self.morreu = True
-
     def verificar_colisao(self):
         cabeca = []
         cabeca.append(self.x)
@@ -44,6 +40,10 @@ class Cobra:
         for segmento in self.lista_cobra[:-1]:
             if segmento == cabeca:
                 self.morreu = True
+
+        if self.x >= self.largura or self.x < 0 or self.y >= self.altura or self.y < 0:
+
+            self.morreu = True
 
     def reiniciar(self):
         self.x = int(self.largura / 2)
