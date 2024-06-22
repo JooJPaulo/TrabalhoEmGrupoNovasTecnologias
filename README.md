@@ -2,4 +2,4 @@
 
 ## Diagrama de classes
 
-![Untitled Diagram drawio(3)](https://github.com/JooJPaulo/TrabalhoEmGrupoNovasTecnologias/assets/107230091/7b461cd2-880b-4947-ae31-39a4261062c3)
+![Untitled Diagram drawio(4)](https://github.com/JooJPaulo/TrabalhoEmGrupoNovasTecnologias/assets/107230091/36c52b41-5f04-439b-85ec-23c4dad0db73)
